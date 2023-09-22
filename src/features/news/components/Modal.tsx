@@ -1,11 +1,11 @@
 import { CloseButton as Close } from "../../../assets";
-import { INoticiasNormalizadas } from "../interface/noticiasNormalizadas";
+import { INoticiaNormalizada } from "../interface/noticiaNormalizada";
 import { CloseButton, ContenedorModal, TarjetaModal } from "../styled"
 import ModalNoPremium from "./ModalNoPremium";
 import ModalPremium from "./ModalPremium";
 
 interface Props {
-    modal: INoticiasNormalizadas
+    modal: INoticiaNormalizada
     cerrarModal: () => void,
     suscribirse: () => void
 }

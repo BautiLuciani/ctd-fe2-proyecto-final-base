@@ -1,8 +1,8 @@
-import { INoticiasNormalizadas } from '../interface/noticiasNormalizadas'
+import { INoticiaNormalizada } from '../interface/noticiaNormalizada'
 import { CotenedorTexto, DescripcionModal, ImagenModal, TituloModal } from '../styled'
 
 interface Props {
-    modal: INoticiasNormalizadas
+    modal: INoticiaNormalizada
 }
 
 const ModalNoPremium = ({ modal }:Props) => {

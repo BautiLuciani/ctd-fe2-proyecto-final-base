@@ -1,4 +1,4 @@
-export interface INoticiasNormalizadas {
+export interface INoticiaNormalizada {
     id: number;
     titulo: string;
     descripcion: string;

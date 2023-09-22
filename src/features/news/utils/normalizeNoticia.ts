@@ -1,6 +1,6 @@
-import { INoticiasNormalizadas } from "../interface/noticiasNormalizadas";
+import { INoticiaNormalizada } from "../interface/noticiaNormalizada";
 
-export const normalizeNoticia = (n: any): INoticiasNormalizadas => {
+export const normalizeNoticia = (n: any): INoticiaNormalizada => {
     const titulo = n.titulo
         .split(" ")
         .map((str: string) => {

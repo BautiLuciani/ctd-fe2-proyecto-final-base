@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { obtenerNoticias } from "./fakeRest";
 import { ContenedorNoticias, ListaNoticias, TituloNoticias } from "./styled";
-import { INoticiasNormalizadas } from "./interface/noticiasNormalizadas";
 import normalizeNoticia from "./utils/normalizeNoticia";
 import TarjetasNoticias from "./components/TarjetasNoticias";
 import Modal from "./components/Modal";
+import { INoticiaNormalizada } from "./interface/noticiaNormalizada";
 
 const Noticias = () => {
-  const [noticias, setNoticias] = useState<INoticiasNormalizadas[]>([]);
-  const [modal, setModal] = useState<INoticiasNormalizadas | null>(null);
+  const [noticias, setNoticias] = useState<INoticiaNormalizada[]>([]);
+  const [modal, setModal] = useState<INoticiaNormalizada | null>(null);
 
   useEffect(() => {
     const obtenerInformacion = async () => {
@@ -20,7 +20,7 @@ const Noticias = () => {
     obtenerInformacion();
   }, []);
 
-  const mostrarModal = (n: INoticiasNormalizadas) => {
+  const mostrarModal = (n: INoticiaNormalizada) => {
     setModal(n);
   };
 

@@ -1,9 +1,9 @@
-import { INoticiasNormalizadas } from "../interface/noticiasNormalizadas"
+import { INoticiaNormalizada } from "../interface/noticiaNormalizada"
 import { BotonLectura, DescripcionTarjetaNoticia, FechaTarjetaNoticia, ImagenTarjetaNoticia, TarjetaNoticia, TituloTarjetaNoticia } from "../styled"
 
 interface Props {
-  n: INoticiasNormalizadas,
-  mostrarModal: (n: INoticiasNormalizadas) => void
+  n: INoticiaNormalizada,
+  mostrarModal: (n: INoticiaNormalizada) => void
 }
 
 const TarjetasNoticias = ({ n, mostrarModal }: Props) => {
