@@ -8,7 +8,7 @@ import { INoticiaNormalizada } from "./interface/noticiaNormalizada";
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState<INoticiaNormalizada[]>([]);
-  const [modal, setModal] = useState<INoticiaNormalizada | null>(null);
+  const [noticiaSeleccionada, setNoticiaSeleccionada] = useState<INoticiaNormalizada | null>(null);
 
   useEffect(() => {
     const obtenerInformacion = async () => {
@@ -21,11 +21,11 @@ const Noticias = () => {
   }, []);
 
   const mostrarModal = (n: INoticiaNormalizada) => {
-    setModal(n);
+    setNoticiaSeleccionada(n);
   };
 
   const cerrarModal = () => {
-    setModal(null);
+    setNoticiaSeleccionada(null);
   };
 
   const suscribirse = () => {
@@ -42,8 +42,8 @@ const Noticias = () => {
         {noticias.map((n) => (
           <TarjetasNoticias n={n} mostrarModal={mostrarModal}/>
         ))}
-        {modal && (
-          <Modal modal={modal} cerrarModal={cerrarModal} suscribirse={suscribirse}/>
+        {noticiaSeleccionada && (
+          <Modal modal={noticiaSeleccionada} cerrarModal={cerrarModal} suscribirse={suscribirse}/>
         )}
       </ListaNoticias>
     </ContenedorNoticias>
