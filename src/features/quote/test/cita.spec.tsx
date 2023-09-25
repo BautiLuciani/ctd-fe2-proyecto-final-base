@@ -2,8 +2,7 @@ import Cita from "../Cita"
 import { screen, fireEvent, waitFor } from '@testing-library/react'
 import { renderRedux } from "./utils"
 import userEvent from "@testing-library/user-event"
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import { errorServer, server } from './mockServer';
 
 describe('Cita', () => {
 
@@ -27,22 +26,6 @@ describe('Cita', () => {
 
     describe('onClickObtenerCita', () => {
 
-        const server = setupServer(
-            rest.get('https://thesimpsonsquoteapi.glitch.me/quotes', (req, res, ctx) => {
-                const character = req.url.searchParams.get('character')
-                return res(
-                    ctx.json([
-                        {
-                            character: character || "Marge Simpson",
-                            quote: `Una cita de ${character}`,
-                            image: `image character`,
-                            direccionPersonaje: `Springfield`
-                        },
-                    ])
-                );
-            })
-        );
-
         beforeAll(() => server.listen());
         afterEach(() => server.resetHandlers());
         afterAll(() => server.close());
@@ -59,7 +42,7 @@ describe('Cita', () => {
             })
         })
 
-        it("Si no se ingreso un autor deberia traer una cita aleatoria", async() => {
+        it("Si no se ingreso un autor deberia traer una cita aleatoria", async () => {
             renderRedux(<Cita />)
             const boton = screen.getByText('Obtener cita aleatoria')
             userEvent.click(boton)
@@ -77,5 +60,92 @@ describe('Cita', () => {
             await userEvent.click(boton)
             expect(screen.getByText("No se encontro ninguna cita")).toBeInTheDocument()
         })
+    })
+
+    describe('Loading', () => {
+        it("Si se ingresa un personaje deberia aparecer 'Cargando...' y luego desaparecer", async () => {
+            renderRedux(<Cita />);
+            const input = screen.getByRole("textbox");
+            fireEvent.change(input, { target: { value: "Homer Simpson" } });
+            const boton = screen.getByText('Obtener Cita');
+
+            userEvent.click(boton);
+
+            const loadingElement = screen.getByText("Cargando...");
+            expect(loadingElement).toBeInTheDocument();
+
+            await waitFor(() => {
+                const loadingElement = screen.queryByText("Cargando...");
+                expect(loadingElement).toBeNull();
+            });
+        })
+
+        it("Si no se ingresa un personaje deberia aparecer 'Cargando...' y luego desaparecer", async () => {
+            renderRedux(<Cita />);
+            const boton = screen.getByText('Obtener cita aleatoria');
+
+            userEvent.click(boton);
+
+            const loadingElement = screen.getByText("Cargando...");
+            expect(loadingElement).toBeInTheDocument();
+
+            await waitFor(() => {
+                const loadingElement = screen.queryByText("Cargando...");
+                expect(loadingElement).toBeNull();
+            });
+        })
+    })
+
+    describe('Ingresar datos incorrectos', () => {
+        it("Ingresar un valor numerico", async () => {
+            renderRedux(<Cita />);
+            const input = screen.getByRole("textbox");
+
+            fireEvent.change(input, { target: { value: "Homer Simpson123" } });
+            const boton = screen.getByText('Obtener Cita');
+
+            userEvent.click(boton);
+
+            await waitFor(() => {
+                const errorMessage = screen.getByText("Por favor ingrese un nombre válido");
+                expect(errorMessage).toBeInTheDocument();
+            });
+        })
+
+        it("Ingresar un valor invalido", async () => {
+            renderRedux(<Cita />);
+            const input = screen.getByRole("textbox");
+
+            fireEvent.change(input, { target: { value: "H@mer Simpson" } });
+            const boton = screen.getByText('Obtener Cita');
+
+            userEvent.click(boton);
+
+            await waitFor(() => {
+                const errorMessage = screen.getByText("Por favor ingrese un nombre válido");
+                expect(errorMessage).toBeInTheDocument();
+            });
+        })
+    })
+
+    describe('Error en la peticion', () => {
+        it("Fallo al realizar la peticion", async () => {
+
+            beforeAll(() => errorServer.listen());
+            afterEach(() => errorServer.resetHandlers());
+            afterAll(() => errorServer.close());
+
+            renderRedux(<Cita />);
+            const input = screen.getByRole("textbox");
+            fireEvent.change(input, { target: { value: "Homer Simpson" } });
+            const boton = screen.getByText('Obtener Cita');
+
+            userEvent.click(boton);
+
+            await waitFor(() => {
+                const errorMessage = screen.getByText("Por favor ingrese un nombre válido");
+                expect(errorMessage).toBeInTheDocument();
+            });
+        });
     })
 })

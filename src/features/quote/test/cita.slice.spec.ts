@@ -22,7 +22,7 @@ describe("Reducer", () => {
         }
 
         it("Deberia limpiar el nuevo estado y devolver el estado inicial", ()=> {
-            const actual = citaReducer(newInitialState, limpiar())
+            const actual: EstadoCita = citaReducer(newInitialState, limpiar())
             expect(actual).toEqual(initialState)
         })
      })
