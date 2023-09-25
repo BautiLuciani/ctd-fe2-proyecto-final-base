@@ -1,8 +1,9 @@
+import { INoticias } from "../fakeRest";
 import { INoticiaNormalizada } from "../interface/noticiaNormalizada";
 import { calculateMinutesAgo } from "./calculateMinutesAgo";
 import { capitalizeWords } from "./capitalizeWords";
 
-export const normalizeNoticia = (n: any): INoticiaNormalizada => {
+export const normalizeNoticia = (n: INoticias): INoticiaNormalizada => {
     const titulo = capitalizeWords(n.titulo)
     const fecha = calculateMinutesAgo(n.fecha);
 

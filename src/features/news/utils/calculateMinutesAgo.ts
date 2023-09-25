@@ -1,7 +1,7 @@
-export const calculateMinutesAgo = (fecha: string): string => {
+export const calculateMinutesAgo = (fecha: Date): string => {
     const ahora = new Date();
     const minutosTranscurridos = Math.floor(
-        (ahora.getTime() - new Date(fecha).getTime()) / 60000
+        (ahora.getTime() - fecha.getTime()) / 60000
     );
     return `Hace ${minutosTranscurridos} minutos`;
 };
